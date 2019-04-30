@@ -6,18 +6,22 @@ module.exports = class PeopleService {
     }
 
     updatePeople(id, people) {
-        console.log(this.peoples);
-        for(var i = 0; i < this.peoples.length;i++){
 
-            if(this.people[i].id === id ){
+        if (people) {
+            let peopleUpdate = this.peoples.find(element => {
+                return parseInt(element.id) === parseInt(id);
+            });
 
+            if (peopleUpdate) {
+                peopleUpdate = {
+                    ...peopleUpdate,
+                    ...people
+                };
+                return peopleUpdate;
             }
-        }
 
-        return {
-            isFind: result.matchedCount === 1,
-            isModified: result.modifiedCount === 1
-        };
+        }
+        return null;
     }
     
     getPeople(filters) {

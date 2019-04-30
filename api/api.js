@@ -10,23 +10,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api/v1', v1);
 
-v1.put('/people/{id}',(request, response) => {
-    
-    console.log('test');
-    const id = request.params.id;
-    const people = {...request.body};
-    console.log('test');
-    const result = peopleService.updatePeople(id, people);
-    if (!result.isFind) return response.sendStatus(HttpStatus.NOT_FOUND);
-    if (!result.isModified) return response.sendStatus(HttpStatus.NOT_MODIFIED);
-    response.sendStatus(HttpStatus.OK);
-
-
-
+v1.put('/people/:id', async (request, response) => {
+    try {
+        const id = request.params.id;
+        const people = request.body;
+        const result = await peopleService.updatePeople(id, people);
+        if (result){return response.sendStatus(HttpStatus.OK);} 
+        else {response.sendStatus(HttpStatus.NOT_FOUND);} 
+    }
+    catch(error) {
+        console.log('error occurs: ', error);
+        response.sendStatus(HttpStatus.BAD_REQUEST).end(error);
+    }
 });
 
-v1.get('/people',(request, response)=>{
-    const data = peopleService.getPeople();
+v1.get('/people',async (request, response)=>{
+    const data = await peopleService.getPeople();
     response.send(data);
 });
 

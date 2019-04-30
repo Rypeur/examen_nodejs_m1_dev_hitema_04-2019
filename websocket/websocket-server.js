@@ -1,6 +1,6 @@
 const WebSocket = require('ws')
 const webSocketServer = new WebSocket.Server({ port: 3001 });
-let messages =[];
+var messages =[];
   
 webSocketServer.on('connection', webSocket => {
     webSocket.onmessage = messageEvent => {
@@ -12,6 +12,7 @@ webSocketServer.on('connection', webSocket => {
             }
             });
         };
+        // Fonctionnel mais pas optimisé
         if(messages.length >0){
             for(var i =0 ; i<messages.length;i++){
                 webSocket.send(messages[i]);
