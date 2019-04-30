@@ -1,24 +1,18 @@
 const WebSocket = require('ws')
 const webSocketServer = new WebSocket.Server({ port: 3001 });
-var messages =[];
-  
+var messages = [];
+
 webSocketServer.on('connection', webSocket => {
     webSocket.onmessage = messageEvent => {
         const message = messageEvent.data;
         messages.push(message);
         webSocketServer.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(message);
+                client.send(JSON.stringify(messages));
             }
-            });
-        };
-        // Fonctionnel mais pas optimisé
-        if(messages.length >0){
-            for(var i =0 ; i<messages.length;i++){
-                webSocket.send(messages[i]);
-            }
-            
-        }
-    });
+        });
+    };
+    webSocket.send(JSON.stringify(messages));
+});
 
 module.exports = webSocketServer;
