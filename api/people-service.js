@@ -27,14 +27,6 @@ module.exports = class PeopleService {
     getPeople(filters) {
         let result;
         if(filters){
-            result = this.peoples.filter(element =>{
-                if(element.gender === filters.gender){
-                    return element;
-                }
-                if(element.name === filters.name){
-                    return element;
-                }
-            })
 
         }
         else{
